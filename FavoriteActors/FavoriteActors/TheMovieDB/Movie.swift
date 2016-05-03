@@ -7,9 +7,10 @@
 
 import UIKit
 
-class Movie {
+class Movie: NSObject, NSCoding {
     
     struct Keys {
+        static let ID = "id"
         static let Title = "title"
         static let PosterPath = "poster_path"
         static let ReleaseDate = "release_date"
@@ -47,6 +48,24 @@ class Movie {
         set {
             TheMovieDB.Caches.imageCache.storeImage(newValue, withIdentifier: posterPath!)
         }
+    }
+    
+    // MARK: - NSCoding Protocol Methods
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeInteger(id, forKey: Keys.ID)
+        aCoder.encodeObject(title, forKey: Keys.Title)
+        aCoder.encodeObject(posterPath, forKey: Keys.PosterPath)
+        aCoder.encodeObject(releaseDate, forKey: Keys.ReleaseDate)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init()
+        
+        id = aDecoder.decodeIntegerForKey(Keys.ID)
+        title = aDecoder.decodeObjectForKey(Keys.Title) as! String
+        posterPath = aDecoder.decodeObjectForKey(Keys.PosterPath) as? String
+        releaseDate = aDecoder.decodeObjectForKey(Keys.ReleaseDate) as? NSDate
     }
 }
 

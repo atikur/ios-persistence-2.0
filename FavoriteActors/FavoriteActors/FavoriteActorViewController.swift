@@ -19,6 +19,10 @@ class FavoriteActorViewController : UITableViewController, ActorPickerViewContro
 
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addActor")
+        
+        if let persons = NSKeyedUnarchiver.unarchiveObjectWithFile(actorsFilePath) as? [Person] {
+            actors = persons
+        }
     }
     
     // Mark: - Actions
@@ -46,6 +50,8 @@ class FavoriteActorViewController : UITableViewController, ActorPickerViewContro
             
             // If we didn't find any, then add
             self.actors.append(newActor)
+            
+            NSKeyedArchiver.archiveRootObject(actors, toFile: actorsFilePath)
 
             // And reload the table
             self.tableView.reloadData()
