@@ -23,6 +23,8 @@ class PlaySoundsViewController: UIViewController {
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var stopButton: UIButton!
     
+    let userDefaults = NSUserDefaults.standardUserDefaults()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,6 +43,8 @@ class PlaySoundsViewController: UIViewController {
         }
         
         setUserInterfaceToPlayMode(false)
+        
+        sliderView.value = userDefaults.floatForKey(SliderValueKey)
     }
     
     func setUserInterfaceToPlayMode(isPlayMode: Bool) {
@@ -98,5 +102,7 @@ class PlaySoundsViewController: UIViewController {
     @IBAction func sliderDidMove(sender: UISlider) {
         // Do nothing?
         print("Slider value: \(sliderView.value)")
+        userDefaults.setFloat(sender.value, forKey: SliderValueKey)
+        userDefaults.synchronize()
     }
 }
