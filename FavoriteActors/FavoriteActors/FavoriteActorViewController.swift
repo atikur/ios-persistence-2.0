@@ -13,6 +13,11 @@ class FavoriteActorViewController : UITableViewController, ActorPickerViewContro
     
     var actors = [Person]()
     
+    var sharedContext: NSManagedObjectContext {
+        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        return delegate.managedObjectContext
+    }
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
